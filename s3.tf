@@ -19,6 +19,17 @@ resource "aws_s3_bucket" "cg-cardholder-data-bucket" {
     yor_trace            = "c65b5757-5b4c-4927-a8df-a0b777f80115"
   }
 }
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "cg-cardholder-data-bucket" {
+  bucket = aws_s3_bucket.cg-cardholder-data-bucket.bucket
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm     = "aws:kms"
+    }
+  }
+}
+
 resource "aws_s3_bucket_object" "cardholder-data-primary" {
   bucket = "${aws_s3_bucket.cg-cardholder-data-bucket.id}"
   key    = "cardholder_data_primary.csv"
